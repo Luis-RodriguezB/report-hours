@@ -24,7 +24,7 @@ export const Input = ({
       {label && (
         <label
           htmlFor={inputId}
-          className="mb-1 block text-sm font-medium text-gray-700"
+          className="mb-1.5 block text-sm font-medium text-stone-600"
         >
           {label}
         </label>
@@ -34,11 +34,12 @@ export const Input = ({
         ref={ref}
         id={inputId}
         className={clsx(
-          "w-full rounded-md border p-3 text-sm shadow-sm transition",
-          "focus:outline-none focus:ring-2",
+          "w-full rounded-lg border bg-white px-3 py-2.5 text-sm text-stone-800 shadow-sm transition-all duration-150",
+          "placeholder:text-stone-300",
+          "focus:outline-none focus:ring-2 focus:ring-offset-0",
           error
-            ? "border-red-500 focus:ring-red-500"
-            : "border-gray-300 focus:ring-blue-500",
+            ? "border-rose-400 focus:ring-rose-300 focus:border-rose-400"
+            : "border-stone-200 focus:ring-indigo-400/50 focus:border-indigo-400",
           className
         )}
         aria-invalid={!!error}
@@ -47,7 +48,7 @@ export const Input = ({
       />
 
       {error && (
-        <div id={`${inputId}-error`} className="mt-1 text-xs text-red-600">
+        <div id={`${inputId}-error`} className="mt-1.5 text-xs text-rose-600">
           {error}
         </div>
       )}

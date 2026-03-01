@@ -1,5 +1,5 @@
-import { Input } from "@/components/common/Input";
 import { Button } from "@/components/common/Button";
+import { TaskFormFields } from "../TaskFormFields";
 import { useUpdateTask } from "./useUpdateTask";
 
 export const UpdateTask = () => {
@@ -8,58 +8,28 @@ export const UpdateTask = () => {
 
   return (
     <>
-      <h1 className="text-2xl font-bold text-center mb-4">Actualizar tarea</h1>
+      <div className="mb-6">
+        <h2 className="text-base font-semibold text-stone-800">Editar tarea</h2>
+        <p className="text-xs text-stone-400 mt-0.5">
+          Modifica o elimina el registro seleccionado
+        </p>
+      </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Input
-          type="text"
-          label="Nombre de la tarea"
-          containerClassName="mb-4"
-          {...register("title", {
-            required: {
-              value: true,
-              message: "El nombre de la tarea es requerido",
-            },
-          })}
-          error={formState.errors.title?.message}
-        />
+        <TaskFormFields register={register} errors={formState.errors} />
 
-        <Input
-          type="number"
-          label="Horas"
-          max={8}
-          min={0.5}
-          step={0.5}
-          containerClassName="mb-4"
-          {...register("hours", {
-            required: {
-              value: true,
-              message: "El número de horas es requerido",
-            },
-            min: {
-              value: 0.5,
-              message: "El número de horas debe ser mayor a 0",
-            },
-            max: {
-              value: 8,
-              message: "El número de horas debe ser menor o igual a 8",
-            },
-          })}
-          error={formState.errors.hours?.message}
-        />
-
-        <div className="flex justify-center gap-2 mt-4">
-          <Button type="submit" color="info">
-            Actualizar
-          </Button>
-
-          <Button type="button" color="danger" onClick={onDelete}>
+        <div className="flex gap-2 mt-6">
+          <Button type="button" color="danger" variant="outlined" onClick={onDelete}>
             Eliminar
           </Button>
-
-          <Button type="button" color="secondary" onClick={onCancel}>
-            Cancelar
-          </Button>
+          <div className="flex gap-2 ml-auto">
+            <Button type="button" color="secondary" variant="outlined" onClick={onCancel}>
+              Cancelar
+            </Button>
+            <Button type="submit" color="info">
+              Guardar
+            </Button>
+          </div>
         </div>
       </form>
     </>

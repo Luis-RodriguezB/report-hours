@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 import {
   View,
   Views,
@@ -14,7 +14,7 @@ import { es } from "date-fns/locale";
 import { MySwal } from "@/components/common/MySwal";
 import { useTimesheetStore } from "@/store/timesheetStore";
 import { useCalendarSelectionStore } from "@/store/calendarSelectionStore";
-import { useTimesheetModalsContext } from "@/context/timesheet-modals/useTimesheetModalsContext";
+import { useModalStore } from "@/store/modalStore";
 import { CalendarEntry } from "@/interfaces/CalendarEntry";
 import { MAX_HOURS_PER_DAY } from "@/const";
 
@@ -63,9 +63,9 @@ const slotPropGetter: SlotPropGetter = (date) => {
   if (isWeekend || isLunch) {
     return {
       style: {
-        backgroundColor: "gray",
+        backgroundColor: "#ede8e0",
         pointerEvents: "none",
-        opacity: 0.6,
+        opacity: 0.8,
       },
     };
   }
@@ -77,16 +77,13 @@ export const useTimesheetCalendar = () => {
   const [view, setView] = useState<View>(Views.WEEK);
   const [currentDate, setCurrentDate] = useState(new Date());
 
-  const allTasks = useTimesheetStore(
+  const openModal = useModalStore((state) => state.openModal);
+
+  const events = useTimesheetStore(
     useShallow((state) =>
-      Object.values(state.months)
-        .flatMap((month) => Object.values(month))
-        .flat(),
+      Object.values(state.months).flatMap((month) => Object.values(month).flat()),
     ),
   );
-
-  const { modalAddTaskRef, modalAddNonWorkingDayRef, modalUpdateTaskRef } =
-    useTimesheetModalsContext();
 
   const setCalendarSelection = useCalendarSelectionStore(
     (state) => state.setCalendarSelection,
@@ -95,9 +92,13 @@ export const useTimesheetCalendar = () => {
     (state) => state.setSelectedEvent,
   );
 
-  const events = useMemo(() => allTasks, [allTasks]);
-
-  const handleSelectSlot = async ({ start, end }: any) => {
+  const handleSelectSlot = async ({
+    start,
+    end,
+  }: {
+    start: Date;
+    end: Date;
+  }) => {
     const day = start.getDay();
     const hour = start.getHours();
 
@@ -131,15 +132,15 @@ export const useTimesheetCalendar = () => {
     });
 
     if (result.isConfirmed) {
-      modalAddTaskRef.current?.open();
+      openModal("addTask");
     } else if (result.dismiss === MySwal.DismissReason.cancel) {
-      modalAddNonWorkingDayRef.current?.open();
+      openModal("addNonWorkingDay");
     }
   };
 
   const handleClickEvent = async (event: CalendarEntry) => {
     setSelectedEvent(event);
-    modalUpdateTaskRef.current?.open();
+    openModal("updateTask");
   };
 
   const onNavigate = useCallback(

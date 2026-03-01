@@ -7,15 +7,10 @@ import { addWorkHoursSkippingLunch, getNextStartTime } from "@/utils/dateUtils";
 import { useModalContext } from "@/context/modal/useModalContext";
 import { MySwal } from "@/components/common/MySwal";
 import { MAX_HOURS_PER_DAY } from "@/const";
-
-interface IFormValues {
-  title: string;
-  date: Date;
-  hours: number;
-}
+import { TaskFormValues } from "../TaskFormFields";
 
 export const useAddTask = () => {
-  const { formState, register, handleSubmit } = useForm<IFormValues>();
+  const { formState, register, handleSubmit } = useForm<TaskFormValues>();
   const parentModal = useModalContext();
 
   const start = useCalendarSelectionStore((state) => state.start);
@@ -26,7 +21,7 @@ export const useAddTask = () => {
 
   const getEventsByDay = useTimesheetStore((state) => state.getEventsByDay);
 
-  const onSubmit: SubmitHandler<IFormValues> = (data) => {
+  const onSubmit: SubmitHandler<TaskFormValues> = (data) => {
     const hoursToAdd = Number(data.hours);
 
     const dayEvents = getEventsByDay(start!);

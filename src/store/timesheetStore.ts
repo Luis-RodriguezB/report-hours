@@ -110,7 +110,6 @@ export const useTimesheetStore = create<TimesheetStore>()(
         const monthKey = getMonthKey(date);
         const month = get().months[monthKey];
 
-        console.log(month);
         if (!month) return [];
 
         return Object.values(month)

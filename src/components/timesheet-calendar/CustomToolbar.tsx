@@ -8,6 +8,14 @@ import { getMonthKey } from "@/utils/dateUtils";
 import { exportExcelMonth } from "@/services/exportExcelMonth";
 import { flattenMonthData } from "@/utils/flattenMonthData";
 
+const VIEW_LABELS: Partial<Record<View | string, string>> = {
+  [Views.MONTH]: "Mes",
+  [Views.WEEK]: "Semana",
+  [Views.DAY]: "Día",
+  [Views.AGENDA]: "Agenda",
+  work_week: "Sem. laboral",
+};
+
 export const CustomToolbar = ({
   view,
   views,
@@ -40,60 +48,61 @@ export const CustomToolbar = ({
   };
 
   return (
-    <div className="flex items-center justify-between mb-4">
-      <div className="flex gap-3">
-        <ButtonGroup variant="outlined" color="info">
-          <Button
-            variant={activeNav === "PREV" ? "contained" : "outlined"}
-            onClick={() => handleNavigate("PREV")}
-          >
-            Anterior
-          </Button>
-          <Button
-            variant={activeNav === "TODAY" ? "contained" : "outlined"}
-            onClick={() => handleNavigate("TODAY")}
-          >
-            Hoy
-          </Button>
-          <Button
-            variant={activeNav === "NEXT" ? "contained" : "outlined"}
-            onClick={() => handleNavigate("NEXT")}
-          >
-            Siguiente
-          </Button>
-        </ButtonGroup>
+    <div className="flex items-center gap-3 mb-4 flex-wrap">
+      {/* Navigation */}
+      <ButtonGroup variant="outlined" color="info">
+        <Button
+          variant={activeNav === "PREV" ? "contained" : "outlined"}
+          onClick={() => handleNavigate("PREV")}
+          className="px-3"
+          title="Anterior"
+        >
+          ‹
+        </Button>
+        <Button
+          variant={activeNav === "TODAY" ? "contained" : "outlined"}
+          onClick={() => handleNavigate("TODAY")}
+        >
+          Hoy
+        </Button>
+        <Button
+          variant={activeNav === "NEXT" ? "contained" : "outlined"}
+          onClick={() => handleNavigate("NEXT")}
+          className="px-3"
+          title="Siguiente"
+        >
+          ›
+        </Button>
+      </ButtonGroup>
 
-        <ButtonGroup variant="outlined" color="info">
-          {viewList.map((v) => (
-            <Button
-              key={v}
-              onClick={() => onView(v)}
-              variant={view === v ? "contained" : "outlined"}
-            >
-              {v === Views.MONTH && "Mes"}
-              {v === Views.WEEK && "Semana"}
-              {v === Views.DAY && "Día"}
-              {v === Views.AGENDA && "Agenda"}
-              {v === "work_week" && "Semana laboral"}
-            </Button>
-          ))}
-        </ButtonGroup>
-      </div>
+      {/* View switcher */}
+      <ButtonGroup variant="outlined" color="secondary">
+        {viewList.map((v) => (
+          <Button
+            key={v}
+            onClick={() => onView(v)}
+            variant={view === v ? "contained" : "outlined"}
+          >
+            {VIEW_LABELS[v] ?? v}
+          </Button>
+        ))}
+      </ButtonGroup>
 
-      <span className="text-xl font-bold capitalize flex-1 text-center">
+      {/* Label – centered */}
+      <span className="flex-1 text-center text-base font-semibold text-stone-700 capitalize tracking-tight min-w-32">
         {label}
       </span>
 
-      <div className="flex gap-3">
-        <Button
-          variant="outlined"
-          color="info"
-          onClick={handleExportExcel}
-          disabled={tasks.length === 0}
-        >
-          Exportar
-        </Button>
-      </div>
+      {/* Export */}
+      <Button
+        variant="outlined"
+        color="secondary"
+        onClick={handleExportExcel}
+        disabled={tasks.length === 0}
+        title="Exportar a Excel"
+      >
+        ↓ Exportar
+      </Button>
     </div>
   );
 };

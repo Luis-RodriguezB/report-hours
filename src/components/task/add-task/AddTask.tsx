@@ -1,5 +1,5 @@
-import { Input } from "@/components/common/Input";
 import { Button } from "@/components/common/Button";
+import { TaskFormFields } from "../TaskFormFields";
 import { useAddTask } from "./useAddTask";
 
 export const AddTask = () => {
@@ -8,53 +8,22 @@ export const AddTask = () => {
 
   return (
     <>
-      <h1 className="text-2xl font-bold text-center mb-4">Agregar tarea</h1>
+      <div className="mb-6">
+        <h2 className="text-base font-semibold text-stone-800">Nueva tarea</h2>
+        <p className="text-xs text-stone-400 mt-0.5">
+          Completa los datos para registrar la tarea
+        </p>
+      </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Input
-          type="text"
-          label="Nombre de la tarea"
-          containerClassName="mb-4"
-          {...register("title", {
-            required: {
-              value: true,
-              message: "El nombre de la tarea es requerido",
-            },
-          })}
-          error={formState.errors.title?.message}
-        />
+        <TaskFormFields register={register} errors={formState.errors} />
 
-        <Input
-          type="number"
-          label="Horas"
-          max={8}
-          min={0.5}
-          step={0.5}
-          containerClassName="mb-4"
-          {...register("hours", {
-            required: {
-              value: true,
-              message: "El número de horas es requerido",
-            },
-            min: {
-              value: 0.5,
-              message: "El número de horas debe ser mayor a 0",
-            },
-            max: {
-              value: 8,
-              message: "El número de horas debe ser menor o igual a 8",
-            },
-          })}
-          error={formState.errors.hours?.message}
-        />
-
-        <div className="flex justify-center gap-2 mt-4">
-          <Button type="submit" color="info">
-            Agregar
-          </Button>
-
-          <Button type="button" color="secondary" onClick={onCancel}>
+        <div className="flex gap-2 mt-6 justify-end">
+          <Button type="button" color="secondary" variant="outlined" onClick={onCancel}>
             Cancelar
+          </Button>
+          <Button type="submit" color="info">
+            Agregar tarea
           </Button>
         </div>
       </form>

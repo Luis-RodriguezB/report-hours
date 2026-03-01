@@ -16,15 +16,19 @@ export const AddNonWorkingDay = () => {
 
   return (
     <>
-      <h1 className="text-2xl font-bold text-center mb-4">
-        Agregar día no laboral
-      </h1>
+      <div className="mb-6">
+        <h2 className="text-base font-semibold text-stone-800">Día no laboral</h2>
+        <p className="text-xs text-stone-400 mt-0.5">
+          Marca este día como libre o feriado
+        </p>
+      </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <Input
           type="text"
           label="Nombre"
           containerClassName="mb-4"
+          placeholder="Ej: Día de reyes"
           {...register("title", {
             required: {
               value: true,
@@ -35,7 +39,7 @@ export const AddNonWorkingDay = () => {
         />
 
         <Select
-          label="Tipo de día no laboral"
+          label="Tipo"
           options={NON_WORKING_DAY_TYPE_OPTIONS}
           containerClassName="mb-4"
           {...register("typeOfNonWorkingDay", {
@@ -47,13 +51,12 @@ export const AddNonWorkingDay = () => {
           error={formState.errors.typeOfNonWorkingDay?.message}
         />
 
-        <div className="flex justify-center gap-2 mt-4">
-          <Button type="submit" color="info">
-            Agregar
-          </Button>
-
-          <Button type="button" color="secondary" onClick={onCancel}>
+        <div className="flex gap-2 mt-6 justify-end">
+          <Button type="button" color="secondary" variant="outlined" onClick={onCancel}>
             Cancelar
+          </Button>
+          <Button type="submit" color="info">
+            Marcar día
           </Button>
         </div>
       </form>

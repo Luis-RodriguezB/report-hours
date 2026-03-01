@@ -5,16 +5,12 @@ import { useCalendarSelectionStore } from "@/store/calendarSelectionStore";
 import { useTimesheetStore } from "@/store/timesheetStore";
 import { useModalContext } from "@/context/modal/useModalContext";
 import { MySwal } from "@/components/common/MySwal";
+import { addWorkHoursSkippingLunch } from "@/utils/dateUtils";
 import { MAX_HOURS_PER_DAY } from "@/const";
-
-interface IFormValues {
-  title: string;
-  date: Date;
-  hours: number;
-}
+import { TaskFormValues } from "../TaskFormFields";
 
 export const useUpdateTask = () => {
-  const { formState, register, handleSubmit, reset } = useForm<IFormValues>();
+  const { formState, register, handleSubmit, reset } = useForm<TaskFormValues>();
   const parentModal = useModalContext();
 
   const updateEvent = useTimesheetStore((state) => state.updateEvent);
@@ -22,13 +18,13 @@ export const useUpdateTask = () => {
   const getEventsByDay = useTimesheetStore((state) => state.getEventsByDay);
 
   const selectedEvent = useCalendarSelectionStore(
-    (state) => state.selectedEvent
+    (state) => state.selectedEvent,
   );
   const clearCalendarSelection = useCalendarSelectionStore(
-    (state) => state.clearCalendarSelection
+    (state) => state.clearCalendarSelection,
   );
 
-  const onSubmit: SubmitHandler<IFormValues> = (data) => {
+  const onSubmit: SubmitHandler<TaskFormValues> = (data) => {
     if (!selectedEvent) return;
 
     const dayEvents = getEventsByDay(selectedEvent.start);
@@ -58,6 +54,7 @@ export const useUpdateTask = () => {
       ...selectedEvent,
       title: data.title,
       hours: Number(data.hours),
+      end: addWorkHoursSkippingLunch(selectedEvent.start, Number(data.hours)),
     });
 
     clearCalendarSelection();

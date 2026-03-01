@@ -1,12 +1,31 @@
+import { useCallback } from "react";
 import { Calendar } from "react-big-calendar";
 
 import { CustomToolbar } from "./CustomToolbar";
 import { useTimesheetCalendar } from "./useTimesheetCalendar";
 import { getMinMaxTime } from "@/utils/dateUtils";
+import { CalendarEntry } from "@/interfaces/CalendarEntry";
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
 const { min, max } = getMinMaxTime(new Date());
+
+const eventPropGetter = (event: CalendarEntry) => {
+  if (event.kind === "non-working") {
+    return {
+      style: {
+        backgroundColor: "#78716c",
+        color: "#fafaf9",
+      },
+    };
+  }
+  return {
+    style: {
+      backgroundColor: "#4f46e5",
+      color: "#fff",
+    },
+  };
+};
 
 export const TimesheetCalendar = () => {
   const {
@@ -24,8 +43,13 @@ export const TimesheetCalendar = () => {
     handleClickEvent,
   } = useTimesheetCalendar();
 
+  const handleViewChange = useCallback(
+    (v: typeof view) => setView(v),
+    [setView],
+  );
+
   return (
-    <div>
+    <div className="rounded-2xl overflow-hidden">
       <Calendar
         selectable
         culture="es"
@@ -43,12 +67,13 @@ export const TimesheetCalendar = () => {
         messages={messages}
         localizer={localizer}
         components={{ toolbar: CustomToolbar }}
+        eventPropGetter={eventPropGetter}
         onNavigate={onNavigate}
         onSelectSlot={handleSelectSlot}
         slotPropGetter={slotPropGetter}
         onSelectEvent={handleClickEvent}
-        onView={(view) => setView(view)}
-        style={{ height: 600 }}
+        onView={handleViewChange}
+        style={{ height: "calc(100vh - 180px)", minHeight: 480 }}
       />
     </div>
   );

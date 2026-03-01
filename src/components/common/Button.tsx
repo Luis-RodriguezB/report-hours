@@ -18,36 +18,36 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const baseStyles =
-  "inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md font-medium transition-colors focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed";
+  "inline-flex items-center justify-center gap-2 px-4 py-1.5 rounded-lg text-sm font-medium transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 disabled:opacity-40 disabled:cursor-not-allowed";
 
 const variantStyles: Record<
   Exclude<ButtonVariant, never>,
   Record<Exclude<ButtonColor, "none">, string>
 > = {
   contained: {
-    success: "bg-green-600 text-white hover:bg-green-700",
-    warning: "bg-yellow-500 text-white hover:bg-yellow-600",
-    info: "bg-blue-600 text-white hover:bg-blue-700",
-    danger: "bg-red-600 text-white hover:bg-red-700",
-    secondary: "bg-gray-500 text-white hover:bg-gray-600",
+    success: "bg-emerald-700 text-white hover:bg-emerald-800",
+    warning: "bg-amber-500 text-white hover:bg-amber-600",
+    info: "bg-indigo-600 text-white hover:bg-indigo-700 focus-visible:ring-indigo-500",
+    danger: "bg-rose-600 text-white hover:bg-rose-700 focus-visible:ring-rose-500",
+    secondary: "bg-stone-500 text-white hover:bg-stone-600 focus-visible:ring-stone-400",
   },
   outlined: {
     success:
-      "border border-green-600 text-green-600 hover:bg-green-600 hover:text-white",
+      "border border-emerald-600 text-emerald-700 hover:bg-emerald-700 hover:text-white",
     warning:
-      "border border-yellow-500 text-yellow-600 hover:bg-yellow-500 hover:text-white",
-    info: "border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white",
+      "border border-amber-400 text-amber-700 hover:bg-amber-500 hover:text-white",
+    info: "border border-indigo-400 text-indigo-600 hover:bg-indigo-600 hover:text-white focus-visible:ring-indigo-400",
     danger:
-      "border border-red-600 text-red-600 hover:bg-red-600 hover:text-white",
+      "border border-rose-400 text-rose-600 hover:bg-rose-600 hover:text-white focus-visible:ring-rose-400",
     secondary:
-      "border border-gray-400 text-gray-600 hover:bg-gray-500 hover:text-white",
+      "border border-stone-300 text-stone-600 hover:bg-stone-500 hover:text-white focus-visible:ring-stone-400",
   },
   text: {
-    success: "text-green-600 hover:bg-green-50",
-    warning: "text-yellow-600 hover:bg-yellow-50",
-    info: "text-blue-600 hover:bg-blue-50",
-    danger: "text-red-600 hover:bg-red-50",
-    secondary: "text-gray-600 hover:bg-gray-100",
+    success: "text-emerald-700 hover:bg-emerald-50",
+    warning: "text-amber-700 hover:bg-amber-50",
+    info: "text-indigo-600 hover:bg-indigo-50",
+    danger: "text-rose-600 hover:bg-rose-50",
+    secondary: "text-stone-600 hover:bg-stone-100",
   },
 };
 
@@ -69,7 +69,6 @@ export const Button = ({
     <button
       className={clsx(
         !isNone && baseStyles,
-        !isNone && "rounded-md",
         !isNone && variantStyles[resolvedVariant][resolvedColor],
         className
       )}
