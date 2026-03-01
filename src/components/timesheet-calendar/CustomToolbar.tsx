@@ -76,7 +76,7 @@ export const CustomToolbar = ({
       </ButtonGroup>
 
       {/* View switcher */}
-      <ButtonGroup variant="outlined" color="secondary">
+      <ButtonGroup variant="outlined" color="warning">
         {viewList.map((v) => (
           <Button
             key={v}
