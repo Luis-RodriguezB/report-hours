@@ -13,7 +13,7 @@ export const getMonthKey = (date: Date): MonthKey =>
   format(date, "yyyy-MM") as MonthKey;
 
 export const getDateKey = (date: Date): DateKey =>
-  format(date, "yyyy-MM-dd") as DateKey;
+  format(date, "dd/MM/yyyy") as DateKey;
 
 export const getMinMaxTime = (date: Date) => {
   const min = setMilliseconds(
